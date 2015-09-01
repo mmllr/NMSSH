@@ -420,4 +420,18 @@
     return YES;
 }
 
+- (BOOL)chmodFileAtPath:(NSString *)path permissions:(unsigned long)permissions {
+    LIBSSH2_SFTP_HANDLE *handle = [self openFileAtPath:path flags:LIBSSH2_FXF_READ mode:0];
+    if (!handle) {
+        return NO;
+    }
+    LIBSSH2_SFTP_ATTRIBUTES fileAttributes;
+    int rc = libssh2_sftp_fstat(handle, &fileAttributes);
+    if (rc == 0) {
+        fileAttributes.permissions = permissions;
+        return libssh2_sftp_fstat_ex(handle, &fileAttributes, 1) > 0;
+    }
+    return NO;
+}
+
 @end

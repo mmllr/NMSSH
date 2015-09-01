@@ -262,4 +262,12 @@
  */
 - (BOOL)copyContentsOfPath:(NSString *)fromPath toFileAtPath:(NSString *)toPath progress:(BOOL (^)(NSUInteger copied, NSUInteger totalBytes))progress;
 
+/**
+ Updates permissions of a file remotely.
+ 
+ @param path remote file path
+ @param permissions The permissions to set
+ */
+- (BOOL)chmodFileAtPath:(NSString *)path permissions:(unsigned long)permissions;
+
 @end
