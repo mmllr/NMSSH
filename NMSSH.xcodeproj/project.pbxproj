@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		188B5E3B1C7CB7D0003A6AFD /* libcrypto.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 188B5E391C7CB7D0003A6AFD /* libcrypto.a */; };
+		188B5E3C1C7CB7D0003A6AFD /* libssl.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 188B5E3A1C7CB7D0003A6AFD /* libssl.a */; };
 		18B4FE85188C87F3004E05FF /* NMSSH+Protected.h in Headers */ = {isa = PBXBuildFile; fileRef = 18B4FE84188C87F3004E05FF /* NMSSH+Protected.h */; };
 		18B4FE8E188CB2BB004E05FF /* libssh2.h in Headers */ = {isa = PBXBuildFile; fileRef = 18B4FE89188CB2BB004E05FF /* libssh2.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		18B4FE8F188CB2BB004E05FF /* libssh2_publickey.h in Headers */ = {isa = PBXBuildFile; fileRef = 18B4FE8A188CB2BB004E05FF /* libssh2_publickey.h */; };
@@ -35,8 +37,6 @@
 		E48DA7BD15D0EB2800721060 /* NMSFTP.h in Headers */ = {isa = PBXBuildFile; fileRef = E48DA7BB15D0EB2800721060 /* NMSFTP.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		E48DA7BE15D0EB2800721060 /* NMSFTP.m in Sources */ = {isa = PBXBuildFile; fileRef = E48DA7BC15D0EB2800721060 /* NMSFTP.m */; };
 		E48DA7BF15D0EB2800721060 /* NMSFTP.m in Sources */ = {isa = PBXBuildFile; fileRef = E48DA7BC15D0EB2800721060 /* NMSFTP.m */; };
-		E4D99A9D15DE149D00EB5615 /* libssl.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = E4D99A9C15DE149D00EB5615 /* libssl.dylib */; };
-		E4D99AA215DE15A600EB5615 /* libcrypto.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = E4D99AA115DE15A600EB5615 /* libcrypto.dylib */; };
 		E4D99AA415DE15B300EB5615 /* libz.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = E4D99AA315DE15B300EB5615 /* libz.dylib */; };
 		E4E96D88158E10FD002E6E0A /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E4E96D87158E10FD002E6E0A /* Cocoa.framework */; };
 		E4E96D9F158E10FD002E6E0A /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E4E96D87158E10FD002E6E0A /* Cocoa.framework */; };
@@ -82,6 +82,8 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		188B5E391C7CB7D0003A6AFD /* libcrypto.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libcrypto.a; sourceTree = "<group>"; };
+		188B5E3A1C7CB7D0003A6AFD /* libssl.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libssl.a; sourceTree = "<group>"; };
 		18B4FE84188C87F3004E05FF /* NMSSH+Protected.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NMSSH+Protected.h"; sourceTree = "<group>"; };
 		18B4FE89188CB2BB004E05FF /* libssh2.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = libssh2.h; sourceTree = "<group>"; };
 		18B4FE8A188CB2BB004E05FF /* libssh2_publickey.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = libssh2_publickey.h; sourceTree = "<group>"; };
@@ -137,11 +139,11 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				188B5E3C1C7CB7D0003A6AFD /* libssl.a in Frameworks */,
 				E4E96D88158E10FD002E6E0A /* Cocoa.framework in Frameworks */,
 				E4D99AA415DE15B300EB5615 /* libz.dylib in Frameworks */,
-				E4D99AA215DE15A600EB5615 /* libcrypto.dylib in Frameworks */,
+				188B5E3B1C7CB7D0003A6AFD /* libcrypto.a in Frameworks */,
 				18B4FE91188CB2BB004E05FF /* libssh2.a in Frameworks */,
-				E4D99A9D15DE149D00EB5615 /* libssl.dylib in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -189,6 +191,8 @@
 		18B4FE8C188CB2BB004E05FF /* lib */ = {
 			isa = PBXGroup;
 			children = (
+				188B5E391C7CB7D0003A6AFD /* libcrypto.a */,
+				188B5E3A1C7CB7D0003A6AFD /* libssl.a */,
 				18B4FE8D188CB2BB004E05FF /* libssh2.a */,
 			);
 			path = lib;
@@ -406,7 +410,7 @@
 			isa = PBXProject;
 			attributes = {
 				LastTestingUpgradeCheck = 0510;
-				LastUpgradeCheck = 0640;
+				LastUpgradeCheck = 0720;
 			};
 			buildConfigurationList = E4E96D7D158E10FD002E6E0A /* Build configuration list for PBXProject "NMSSH" */;
 			compatibilityVersion = "Xcode 3.2";
@@ -516,6 +520,7 @@
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				COPY_PHASE_STRIP = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_ENABLE_OBJC_EXCEPTIONS = YES;
@@ -585,7 +590,9 @@
 					"$(inherited)",
 					"$(SDKROOT)/usr/lib/system",
 					"$(SRCROOT)/NMSSH-OSX/Libraries/lib",
+					"$(PROJECT_DIR)/NMSSH-OSX/Libraries/lib",
 				);
+				PRODUCT_BUNDLE_IDENTIFIER = "se.ninemuses.${PRODUCT_NAME:rfc1034identifier}";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				WRAPPER_EXTENSION = framework;
 			};
@@ -607,7 +614,9 @@
 					"$(inherited)",
 					"$(SDKROOT)/usr/lib/system",
 					"$(SRCROOT)/NMSSH-OSX/Libraries/lib",
+					"$(PROJECT_DIR)/NMSSH-OSX/Libraries/lib",
 				);
+				PRODUCT_BUNDLE_IDENTIFIER = "se.ninemuses.${PRODUCT_NAME:rfc1034identifier}";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				WRAPPER_EXTENSION = framework;
 			};
@@ -629,6 +638,7 @@
 					"$(inherited)",
 					"\"$(SRCROOT)/NMSSH/libssh2\"",
 				);
+				PRODUCT_BUNDLE_IDENTIFIER = "se.ninemuses.${PRODUCT_NAME:rfc1034identifier}";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 			};
 			name = Debug;
@@ -649,6 +659,7 @@
 					"$(inherited)",
 					"\"$(SRCROOT)/NMSSH/libssh2\"",
 				);
+				PRODUCT_BUNDLE_IDENTIFIER = "se.ninemuses.${PRODUCT_NAME:rfc1034identifier}";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 			};
 			name = Release;

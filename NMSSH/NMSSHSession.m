@@ -17,6 +17,7 @@
 @property (nonatomic, strong) NMSFTP *sftp;
 @property (nonatomic, strong) NSNumber *port;
 @property (nonatomic, strong) NMSSHHostConfig *hostConfig;
+@property (nonatomic, assign) LIBSSH2_SESSION *sessionToFree;
 @end
 
 @implementation NMSSHSession
@@ -100,6 +101,12 @@
     }
 
     return [NSURL URLWithString:[@"ssh://" stringByAppendingString:host]];
+}
+
+- (void)dealloc {
+    if (self.sessionToFree) {
+        libssh2_session_free(self.sessionToFree);
+    }
 }
 
 // -----------------------------------------------------------------------------
@@ -212,8 +219,7 @@
     NSInteger port = [self.port integerValue];
     NSArray *addresses = [self hostIPAddresses];
     CFSocketError error = 1;
-    struct sockaddr_storage *address = NULL;
-
+    CFDataRef address = NULL;
     SInt32 addressFamily;
 
     while (addresses && ++index < [addresses count] && error) {
@@ -226,27 +232,22 @@
             [addressData getBytes:&address4 length:sizeof(address4)];
             address4.sin_port = htons(port);
 
-            address = (struct sockaddr_storage *)(&address4);
-            address->ss_len = sizeof(address4);
-
             char str[INET_ADDRSTRLEN];
             inet_ntop(AF_INET, &(address4.sin_addr), str, INET_ADDRSTRLEN);
             ipAddress = [NSString stringWithCString:str encoding:NSUTF8StringEncoding];
             addressFamily = AF_INET;
+            address = CFDataCreate(kCFAllocatorDefault, (UInt8 *)&address4, sizeof(address4));
         } // IPv6
         else if([addressData length] == sizeof(struct sockaddr_in6)) {
             struct sockaddr_in6 address6;
             [addressData getBytes:&address6 length:sizeof(address6)];
             address6.sin6_port = htons(port);
 
-            address = (struct sockaddr_storage *)(&address6);
-            address->ss_len = sizeof(address6);
-
             char str[INET6_ADDRSTRLEN];
             inet_ntop(AF_INET6, &(address6.sin6_addr), str, INET6_ADDRSTRLEN);
             ipAddress = [NSString stringWithCString:str encoding:NSUTF8StringEncoding];
             addressFamily = AF_INET6;
-            
+            address = CFDataCreate(kCFAllocatorDefault, (UInt8 *)&address6, sizeof(address6));
         }
         else {
             NMSSHLogVerbose(@"Unknown address, it's not IPv4 or IPv6!");
@@ -257,6 +258,7 @@
         _socket = CFSocketCreate(kCFAllocatorDefault, addressFamily, SOCK_STREAM, IPPROTO_IP, kCFSocketNoCallBack, NULL, NULL);
         if (!_socket) {
             NMSSHLogError(@"Error creating the socket");
+            CFRelease(address);
             return NO;
         }
         
@@ -264,12 +266,13 @@
         int set = 1;
         if (setsockopt(CFSocketGetNative(_socket), SOL_SOCKET, SO_NOSIGPIPE, (void *)&set, sizeof(set)) != 0) {
             NMSSHLogError(@"Error setting socket option");
+            CFRelease(address);
             [self disconnect];
             return NO;
         }
         
-        
-        error = CFSocketConnectToAddress(_socket, (__bridge CFDataRef)[NSData dataWithBytes:address length:address->ss_len], [timeout doubleValue]);
+        error = CFSocketConnectToAddress(_socket, address, [timeout doubleValue]);
+        CFRelease(address);
 
         if (error) {
             NMSSHLogVerbose(@"Socket connection to %@ on port %ld failed with reason %li, trying next address...", ipAddress, (long)port, error);
@@ -352,7 +355,7 @@
 
     if (self.session) {
         libssh2_session_disconnect(self.session, "NMSSH: Disconnect");
-        libssh2_session_free(self.session);
+        [self setSessionToFree:self.session];
         [self setSession:NULL];
     }
 
@@ -362,7 +365,6 @@
         _socket = NULL;
     }
 
-    libssh2_exit();
     NMSSHLogVerbose(@"Disconnected");
     [self setConnected:NO];
 }
@@ -421,6 +423,37 @@
                                                     [self.username UTF8String],
                                                     pubKey,
                                                     privKey,
+                                                    [password UTF8String]);
+
+    if (error) {
+        NMSSHLogError(@"Public key authentication failed with reason %i", error);
+        return NO;
+    }
+
+    NMSSHLogVerbose(@"Public key authentication succeeded.");
+
+    return self.isAuthorized;
+}
+
+- (BOOL)authenticateByInMemoryPublicKey:(NSString *)publicKey
+                             privateKey:(NSString *)privateKey
+                            andPassword:(NSString *)password {
+    if (![self supportsAuthenticationMethod:@"publickey"]) {
+        return NO;
+    }
+
+    if (password == nil) {
+        password = @"";
+    }
+
+    // Try to authenticate with key pair and password
+    int error = libssh2_userauth_publickey_frommemory(self.session,
+                                                    [self.username UTF8String],
+                                                    [self.username length],
+                                                    [publicKey UTF8String] ?: nil,
+                                                    [publicKey length] ?: 0,
+                                                    [privateKey UTF8String] ?: nil,
+                                                    [privateKey length] ?: 0,
                                                     [password UTF8String]);
 
     if (error) {
