@@ -1,4 +1,4 @@
-#import "include/socket_helper.h"
+#import "NMSSH.h"
 #import <Foundation/Foundation.h>
 #import <sys/time.h>
 
