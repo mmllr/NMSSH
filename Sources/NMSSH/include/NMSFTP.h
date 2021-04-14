@@ -312,6 +312,6 @@
  @param path remote file path
  @param permissions The permissions to set
  */
-- (BOOL)chmodFileAtPath:(NSString *)path permissions:(unsigned long)permissions;
+- (BOOL)chmodFileAtPath:(nonnull NSString *)path permissions:(unsigned long)permissions;
 
 @end
