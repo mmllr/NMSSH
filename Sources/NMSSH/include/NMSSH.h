@@ -17,5 +17,7 @@
 #import "NMSSHHostConfig.h"
 
 #import "NMSSHLogger.h"
+#import "NMSSH+Protected.h"
+#import "socket_helper.h"
 
 #endif
