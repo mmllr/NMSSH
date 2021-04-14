@@ -1,6 +1,5 @@
-#import "NMSSH.h"
 #import <Foundation/Foundation.h>
-#import <sys/time.h>
+#import "include/socket_helper.h"
 
 int waitsocket(int socket_fd, LIBSSH2_SESSION *session) {
     struct timeval timeout;

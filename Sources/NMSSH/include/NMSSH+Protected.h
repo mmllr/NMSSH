@@ -5,7 +5,7 @@
 #import <netinet/in.h>
 #import <sys/socket.h>
 #import <arpa/inet.h>
-#import "socket_helper.h"
+#import "NMSSH.h"
 
 #define kNMSSHBufferSize (0x4000)
 

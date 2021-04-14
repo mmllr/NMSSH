@@ -1,10 +1,8 @@
 #import <Foundation/Foundation.h>
+@import CSSH;
 
 #ifndef _NMSSH_
 #define _NMSSH_
-
-#import "libssh2.h"
-#import "libssh2_sftp.h"
 
 #import "NMSSHSessionDelegate.h"
 #import "NMSSHChannelDelegate.h"
