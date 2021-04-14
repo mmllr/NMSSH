@@ -1,4 +1,5 @@
 #import "NMSSH.h"
+@import CSSH;
 
 @class NMSSHHostConfig, NMSFTP;
 @protocol NMSSHSessionDelegate;

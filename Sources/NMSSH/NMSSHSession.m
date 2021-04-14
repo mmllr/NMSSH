@@ -1,3 +1,4 @@
+@import CSSH;
 #import "include/NMSSHSession.h"
 #import "include/NMSSH+Protected.h"
 #import "include/NMSSHConfig.h"
