@@ -14,6 +14,7 @@ let package = Package(
             targets: ["NMSSH"]),
     ],
     dependencies: [
+        .package(name: "CSSH", url: "https://github.com/DimaRU/Libssh2Prebuild.git", from: "1.9.0")
     ],
     targets: [
         .target(
@@ -21,10 +22,6 @@ let package = Package(
             dependencies: [
                 "CSSH"
             ]
-        ),
-        .binaryTarget(
-            name: "CSSH",
-            path: "Frameworks/CSSH.xcframework"
         )
     ]
 )
