@@ -13,10 +13,13 @@ let package = Package(
             name: "NMSSH",
             targets: ["NMSSH"]),
     ],
-    dependencies: [
-        .package(name: "CSSH", url: "https://github.com/DimaRU/Libssh2Prebuild.git", from: "1.9.0")
-    ],
+    dependencies: [],
     targets: [
+        .binaryTarget(
+            name: "CSSH",
+            url: "https://cloud.kf-interactive.com/index.php/s/C5tTbzS6cE4Ryjt/download/CSSH.xcframework.zip",
+            checksum: "40fe52c648d1ffc75b7c56e306a46a786ee87782d21408c4c072b2752c6e067c"
+        ),
         .target(
             name: "NMSSH",
             dependencies: [
